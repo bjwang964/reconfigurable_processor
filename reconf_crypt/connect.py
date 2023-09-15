@@ -72,18 +72,17 @@ class test_bench(Component):
         s.p_c = [i for i in range(ROW_LEN)]
         s.from_io = b1(0)
         s.to_io = b1(0)
-        s.conf_out_route = [connect_conf_route() for i in range(ROW_LEN)]
-        s.conf_io = connect_conf_io(s.from_io, s.to_io)
+        s.conf = connect_conf()
 
         @update
         def assign_conf():
-            s.conf_io.from_io = b1(random.randint(0,1))
+            s.conf.conf_io.from_io = b1(random.randint(0,1))
             for i in range(ROW_LEN):
                 s.p_a[i] = random.randint(0,3)
                 s.p_b[i] = random.randint(0,3)
                 s.p_c[i] = random.randint(0,3)
-                s.conf_out_route[i] = connect_conf_route(s.p_a[i],s.p_b[i],s.p_c[i])
-                s.connect.connect_conf.update_conf(s.conf_out_route[i], i, s.conf_io)
+                s.conf.conf_out_route[i] = connect_conf_route(s.p_a[i],s.p_b[i],s.p_c[i])
+            s.connect.update_conf(s.conf)
                 
         @update
         def assign_cnt():

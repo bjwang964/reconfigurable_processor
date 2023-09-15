@@ -35,12 +35,14 @@ class test_bench(Component):
     def construct(s):
         s.pe_row = PE_ROW()
         s.cnt = Wire(Bits32)
-        s.r0_conf = conf_calc(b8(LUT_OP),b8(ADD),b8(5))
+        s.pe_conf = PE_conf()
+        s.pe_conf.r0_calc = conf_calc(b8(LUT_OP),b8(ADD),b8(5))
+        s.pe_conf.imm = b32(1)
 
         @update
         def init():
             for i in range(ROW_LEN):
-                s.pe_row.pe[i].conf.update_conf(s.r0_conf)
+                s.pe_row.pe[i].update_conf(s.pe_conf)
 
         @update
         def assign():

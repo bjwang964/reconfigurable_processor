@@ -83,7 +83,7 @@ class test_bench(Component):
                 for i in range(ROW_LEN):
                     s.layer_conf.pe_conf[i].r0_calc.type = AU_OP
                     s.layer_conf.pe_conf[i].r0_calc.op = ADD
-                    s.layer_conf.pe_conf[i].r0_calc.src = b8(0)
+                    s.layer_conf.pe_conf[i].r0_calc.src = b8(5)
                     s.layer_conf.conc_conf.conf_out_route[i].a_src = i 
                     s.layer_conf.conc_conf.conf_out_route[i].b_src = i 
                     s.layer_conf.conc_conf.conf_out_route[i].c_src = i 
@@ -94,10 +94,10 @@ class test_bench(Component):
             #input
             for i in range(ROW_LEN):    
                 s.al.up_b[i] @= b32(i)
-                s.al.up_c[i] @= b32(i)
-                s.al.in_a[i] @= b32(i)
-                s.al.in_b[i] @= b32(i)
-                s.al.in_c[i] @= b32(i)
+                s.al.up_c[i] @= b32(9)
+                s.al.in_a[i] @= b32(0)
+                s.al.in_b[i] @= b32(0)
+                s.al.in_c[i] @= b32(0)
 
 
         

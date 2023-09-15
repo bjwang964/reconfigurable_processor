@@ -1,7 +1,4 @@
 from pymtl3 import *
-
-
-
 LU_OP =0
 ZERO  =0
 NOT   =1
@@ -89,7 +86,7 @@ class conf_calc(object):
 class PE_conf(object):
     def __init__(s):
         s.r0_calc = conf_calc()
-        s.imm     = Wire(Bits32)
+        s.imm     = b32()
 
 #add calc op
 class PE_FUNC(Component):
@@ -111,91 +108,100 @@ class PE_FUNC(Component):
         return s.comb.comb(s.table_entry0, s.table_entry1, s.table_entry2, s.table_entry3)
 
 
-    def calc_(s, calc, a, b, c):
-        #print(calc.type)
+    def calc_(s, calc, a, b, c, imm):
+        operators = []
+        if calc.src[0] == b1(1):
+            operators.append(a)
+        if calc.src[1] == b1(1):
+            operators.append(b)
+        if calc.src[2] == b1(1):
+            operators.append(c)
+        if calc.src[3] == b1(1):
+            operators.append(imm)
+        
         if calc.type == LU_OP:
             if calc.op == ZERO:
                 return b32(0)
             elif calc.op == NOT:
-                return ~a
+                return ~operators[0]
             elif calc.op == AND:
-                return a&b
+                return operators[0]&operators[1]
             elif calc.op == OR:
-                return a|b
+                return operators[0]|operators[1]
             elif calc.op == XOR:
-                return a^b
+                return operators[0]^operators[1]
             elif calc.op == AA:
-                return a&b&c
+                return operators[0]&operators[1]&operators[2]
             elif calc.op == AO:
-                return a&b|c
+                return operators[0]&operators[1]|operators[2]
             elif calc.op == AX:
-                return a&b^c
+                return operators[0]&operators[1]^operators[2]
             elif calc.op == OA:
-                return a|b&c
+                return operators[0]|operators[1]&operators[2]
             elif calc.op == OO:
-                return a|b|c
+                return operators[0]|operators[1]|operators[2]
             elif calc.op == OX:
-                return a|b^c
+                return operators[0]|operators[1]^operators[2]
             elif calc.op == XA:
-                return a^b&c
+                return operators[0]^operators[1]&operators[2]
             elif calc.op == XO:
-                return a^b|c
+                return operators[0]^operators[1]|operators[2]
             elif calc.op == XX:
-                return a^b^c
+                return operators[0]^operators[1]^operators[2]
             elif calc.op == SLL:
-                return a<<b
+                return operators[0]<<operators[1]
             elif calc.op == SRL:
-                return a>>b
+                return operators[0]>>operators[1]
             elif calc.op == SRA:
-                return a>>b|(a<<(b32(32)-b))
+                return operators[0]>>operators[1]|(operators[0]<<(b32(32)-operators[1]))
             elif calc.op == SLA:
-                return a<<b|(a>>(b32(32)-b))
+                return operators[0]<<operators[1]|(operators[0]>>(b32(32)-operators[1]))
             elif calc.op == SLAB:
-                return a<<8|(a>>(b32(32)-8))
+                return operators[0]<<8|(operators[0]>>(b32(32)-8))
             elif calc.op == SLADB:
-                return a<<16|(a>>(b32(32)-16))
+                return operators[0]<<16|(operators[0]>>(b32(32)-16))
             elif calc.op == SLATB:
-                return a<<24|(a>>(b32(32)-24))
+                return operators[0]<<24|(operators[0]>>(b32(32)-24))
             elif calc.op == SLAQB:
-                return a<<32|(a>>(b32(32)-32))
+                return operators[0]<<32|(operators[0]>>(b32(32)-32))
             elif calc.op == SRAB:
-                return a>>8|(a<<(b32(32)-8))
+                return operators[0]>>8|(operators[0]<<(b32(32)-8))
             elif calc.op == SRADB:
-                return a>>16|(a<<(b32(32)-16))
+                return operators[0]>>16|(operators[0]<<(b32(32)-16))
             elif calc.op == SRATB:
-                return a>>24|(a<<(b32(32)-24))
+                return operators[0]>>24|(operators[0]<<(b32(32)-24))
             elif calc.op == SRAQB:
-                return a>>32|(a<<(b32(32)-32))
+                return operators[0]>>32|(operators[0]<<(b32(32)-32))
             elif calc.op == NONE:
-                return a
+                return operators[0]
             else:
-                return a<<b | c>>b
+                return operators[0]<<operators[1] | operators[2]>>operators[1]
         elif calc.type == AU_OP:
             if calc.op == ADD:
-                return a+b
+                return operators[0]+operators[1]
             elif calc.op == SUB:
-                return a-b
+                return operators[0]-operators[1]
             elif calc.op == MUL:
-                return a*b
+                return operators[0]*operators[1]
             elif calc.op == EQU:
-                if a==b :
+                if operators[0]==operators[1] :
                     return b32(1)
                 else:
                     return b32(0)
             elif calc.op == GT:
-                if a>b :
+                if operators[0]>operators[1] :
                     return b32(1)
                 else:
                     return b32(0)
             elif calc.op == LT:
-                if a<b :
+                if operators[0]<operators[1] :
                     return b32(1)
                 else:       
                     return b32(0)
             else:
-                return a
+                return operators[0]
         else:
-            return s.look_table(a)
+            return s.look_table(operators[0])
 
                 
         
@@ -222,7 +228,7 @@ class PE(Component):
         
         @update_once
         def assign_caluc():
-            s.tmp0 @= s.func.calc(s.conf.r0_calc, s.a, s.b, s.c)
+            s.tmp0 @= s.func.calc(s.conf.r0_calc, s.a, s.b, s.c, s.conf.imm)#TODO
 
         @update_ff
         def always():
@@ -245,11 +251,13 @@ class test_bench(Component):
     def construct(s):
         s.pe = PE()
         s.cnt = Wire(Bits32)
-        s.r0_conf = conf_calc(b8(AU_OP),b8(ADD),b8(5))
+        s.pe_conf = PE_conf()
 
         @update
         def init():
-            s.pe.conf.update_conf(s.r0_conf)
+            s.pe_conf.r0_calc = conf_calc(b8(AU_OP),b8(ADD),b8(5))
+            s.pe_conf.imm = b32(0)
+            s.pe.update_conf(s.pe_conf)
 
         @update
         def assign():
