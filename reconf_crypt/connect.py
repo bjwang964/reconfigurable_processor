@@ -59,8 +59,12 @@ class connect(Component):
                     s.out_r0_wire[i] @= b32(0)
 
     def update_conf(s,connect_conf):
-        print("update connect configure")
         s.connect_conf = connect_conf
+        print("update connect configure", end="   ")
+        for i in range(ROW_LEN):
+            print(s.connect_conf.conf_out_route[i].__dict__, end="   ")
+        print("")
+        print(s.connect_conf.conf_io.__dict__)
 
 class test_bench(Component):
     def construct(s):
@@ -111,26 +115,26 @@ class test_bench(Component):
                     assert s.connect.b[i] == s.connect.in_b[i]
                     assert s.connect.c[i] == s.connect.in_c[i]
 
-        @update_ff
-        def always_print():
-            if s.connect.connect_conf.conf_io.from_io == b1(0):
-                for i in range(ROW_LEN):
-                    print(s.connect.r0[i], end='                                    ')
-                print('')
-                for i in range(ROW_LEN):
-                    print(\
-                    s.connect.connect_conf.conf_out_route[i].a_src,':', s.connect.a[i], \
-                    s.connect.connect_conf.conf_out_route[i].b_src,':', s.connect.b[i], \
-                    s.connect.connect_conf.conf_out_route[i].c_src,':', s.connect.c[i], \
-                    end='      ')
-                print('')
-            else:
-                for i in range(ROW_LEN):
-                    print(s.connect.in_a[i], s.connect.in_b[i], s.connect.in_c[i],end='     ')
-                print('')
-                for i in range(ROW_LEN):
-                    print(s.connect.a[i], s.connect.b[i], s.connect.c[i], end='      ')
-                print('')
+        #@update_ff
+        #def always_print():
+        #    if s.connect.connect_conf.conf_io.from_io == b1(0):
+        #        for i in range(ROW_LEN):
+        #            print(s.connect.r0[i], end='                                    ')
+        #        print('')
+        #        for i in range(ROW_LEN):
+        #            print(\
+        #            s.connect.connect_conf.conf_out_route[i].a_src,':', s.connect.a[i], \
+        #            s.connect.connect_conf.conf_out_route[i].b_src,':', s.connect.b[i], \
+        #            s.connect.connect_conf.conf_out_route[i].c_src,':', s.connect.c[i], \
+        #            end='      ')
+        #        print('')
+        #    else:
+        #        for i in range(ROW_LEN):
+        #            print(s.connect.in_a[i], s.connect.in_b[i], s.connect.in_c[i],end='     ')
+        #        print('')
+        #        for i in range(ROW_LEN):
+        #            print(s.connect.a[i], s.connect.b[i], s.connect.c[i], end='      ')
+        #        print('')
 
             
 

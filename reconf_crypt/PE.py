@@ -77,7 +77,7 @@ class wire_comb(Component):
 #op  :calc operat
 #src :src operator bit map
 class conf_calc(object):
-    def __init__(s, tp=b8(9), op=b8(8), src=b8(7)):
+    def __init__(s, tp=b8(LU_OP), op=b8(NONE), src=b8(1)):
         s.type = tp
         s.op   = op
         s.src  = src
@@ -235,17 +235,9 @@ class PE(Component):
             s.reg0 <<= s.tmp0
 
 
-        #@update
-        #def assign_print():
-        #    print("clk------------------")
-        #    print(s.a, s.b, s.c)
-        #    print(s.r0)
-    def print_conf(s):
-        print(s.conf.r0_calc.type)
-        print('')
     def update_conf(s,PE_conf):
-        print("update PE configure")
         s.conf = PE_conf
+        print("update PE configure",s.conf.r0_calc.__dict__, s.conf.imm)
 
 class test_bench(Component):
     def construct(s):
