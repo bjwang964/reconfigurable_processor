@@ -1,24 +1,25 @@
 from pymtl3 import *
 from PE_row import *
 import random
+from conf import *
 
-class connect_conf_route(object):
-    def __init__(s, src_a=0, src_b=0, src_c=0):
-        s.a_src = src_a
-        s.b_src = src_b
-        s.c_src = src_c
-class connect_conf_io(object):
-    def __init__(s, from_io=0, to_io=0):
-        s.from_io = from_io 
-        s.to_io   = to_io   
-    
+#class connect_conf_route(object):
+#    def __init__(s, src_a=0, src_b=0, src_c=0):
+#        s.a_src = src_a
+#        s.b_src = src_b
+#        s.c_src = src_c
+#class connect_conf_io(object):
+#    def __init__(s, from_io=0, to_io=0):
+#        s.from_io = from_io 
+#        s.to_io   = to_io   
+#    
+#
+#class connect_conf(object):
+#    def __init__(s):
+#        s.conf_out_route = [connect_conf_route() for i in range(ROW_LEN)]
+#        s.conf_io = connect_conf_io()
 
-class connect_conf(object):
-    def __init__(s):
-        s.conf_out_route = [connect_conf_route() for i in range(ROW_LEN)]
-        s.conf_io = connect_conf_io()
-
-class connect(Component):
+class connector(Component):
     def construct(s):
         #Port
         s.r0     =  [InPort(Bits32) for i in range(ROW_LEN)]
@@ -68,7 +69,7 @@ class connect(Component):
 
 class test_bench(Component):
     def construct(s):
-        s.connect = connect()
+        s.connect = connector()
         s.cnt = [Wire(Bits32) for i in range(ROW_LEN)]
         #route
         s.p_a = [i for i in range(ROW_LEN)]

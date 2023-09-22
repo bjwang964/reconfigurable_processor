@@ -1,6 +1,6 @@
 from pymtl3 import *
 from PE import *
-ROW_LEN=4
+from macro import *
 class PE_ROW(Component):
     def construct(s):
         #PE

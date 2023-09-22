@@ -2,12 +2,8 @@ from pymtl3 import *
 from PE_row import *
 from connect import *
 from copy import deepcopy
-class layer_conf(object):
-    def __init__(s):
-        s.pe_conf = [PE_conf() for i in range(ROW_LEN)]
-        s.conc_conf = connect_conf()
+from conf import *
         
-
 
 class array_layer(Component):
     def construct(s):
@@ -26,7 +22,7 @@ class array_layer(Component):
 
         #PE_ROW   connect
         s.PE_row      =  PE_ROW()
-        s.connect     =  connect()
+        s.connect     =  connector()
 
         #conf
         s.layer_conf  = layer_conf()
