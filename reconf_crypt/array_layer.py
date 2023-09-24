@@ -3,6 +3,7 @@ from PE_row import *
 from connect import *
 from copy import deepcopy
 from conf import *
+from layer_controller import *
         
 
 class array_layer(Component):
@@ -26,6 +27,7 @@ class array_layer(Component):
 
         #conf
         s.layer_conf  = layer_conf()
+        s.layer_conf_controller = layer_conf_controller()
 
         #inter connect
         s.inter_r0 = [Wire(Bits32) for i in range(ROW_LEN)]
@@ -47,6 +49,10 @@ class array_layer(Component):
             s.out_r0[i] //= s.connect.out_r0[i]
 
     
+        @update_once
+        def always_ctrl():
+            s.layer_conf_controller.go_step(s)
+        
     
     def update_conf(s,layer_conf):
         print("update layer configure")
