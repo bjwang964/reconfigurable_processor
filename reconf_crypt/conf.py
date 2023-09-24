@@ -19,9 +19,9 @@ class connect_conf_route(object):
         s.b_src = src_b
         s.c_src = src_c
 class connect_conf_io(object):
-    def __init__(s, from_io=0, to_io=0):
-        s.from_io = from_io 
-        s.to_io   = to_io   
+    def __init__(s):
+        s.from_io = [0 for i in range(ROW_LEN)] 
+        s.to_io   = 0
 class connect_conf(object):
     def __init__(s):
         s.conf_out_route = [connect_conf_route() for i in range(ROW_LEN)]

@@ -46,18 +46,18 @@ class connector(Component):
 
         @update
         def assign_route():
-            if s.connect_conf.conf_io.from_io == b1(0):
-                for i in range(ROW_LEN):
+            for i in range(len(s.connect_conf.conf_io.from_io)) :
+                if s.connect_conf.conf_io.from_io[i] == 0:
                     s.a_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].a_src]
                     s.b_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].b_src]
                     s.c_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].c_src]
-                    s.out_r0_wire[i] @= b32(0)
-            else:
-                for i in range(ROW_LEN):
+                else:
                     s.a_wire[i] @= s.in_a[i] 
                     s.b_wire[i] @= s.in_b[i]
                     s.c_wire[i] @= s.in_c[i]
-                    s.out_r0_wire[i] @= b32(0)
+
+            for i in range(ROW_LEN):
+                s.out_r0_wire[i] @= s.r0[i]
 
     def update_conf(s,connect_conf):
         s.connect_conf = connect_conf
@@ -75,13 +75,13 @@ class test_bench(Component):
         s.p_a = [i for i in range(ROW_LEN)]
         s.p_b = [i for i in range(ROW_LEN)]
         s.p_c = [i for i in range(ROW_LEN)]
-        s.from_io = b1(0)
+        s.from_io = [0 for i in range(ROW_LEN)]
         s.to_io = b1(0)
         s.conf = connect_conf()
 
         @update
         def assign_conf():
-            s.conf.conf_io.from_io = b1(random.randint(0,1))
+            s.conf.conf_io.from_io = [random.randint(0,1) for i in range(ROW_LEN)]
             for i in range(ROW_LEN):
                 s.p_a[i] = random.randint(0,3)
                 s.p_b[i] = random.randint(0,3)
@@ -105,13 +105,12 @@ class test_bench(Component):
 
         @update
         def assign_assert():
-            if s.connect.connect_conf.conf_io.from_io == b1(0):
-                for i in range(ROW_LEN):
+            for i in range(len(s.connect.connect_conf.conf_io.from_io)):
+                if s.connect.connect_conf.conf_io.from_io[i] == 0:
                     assert s.connect.a[i] == s.connect.r0[s.connect.connect_conf.conf_out_route[i].a_src]
                     assert s.connect.b[i] == s.connect.r0[s.connect.connect_conf.conf_out_route[i].b_src]
                     assert s.connect.c[i] == s.connect.r0[s.connect.connect_conf.conf_out_route[i].c_src]
-            else:
-                for i in range(ROW_LEN):
+                else:
                     assert s.connect.a[i] == s.connect.in_a[i]
                     assert s.connect.b[i] == s.connect.in_b[i]
                     assert s.connect.c[i] == s.connect.in_c[i]

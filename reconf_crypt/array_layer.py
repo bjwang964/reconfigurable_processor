@@ -83,7 +83,7 @@ class test_bench(Component):
                     s.layer_conf.conc_conf.conf_out_route[i].a_src = i 
                     s.layer_conf.conc_conf.conf_out_route[i].b_src = i 
                     s.layer_conf.conc_conf.conf_out_route[i].c_src = i 
-                s.layer_conf.conc_conf.conf_io.from_io = 0
+                s.layer_conf.conc_conf.conf_io.from_io = [0 for i in range(ROW_LEN)]
                 s.layer_conf.conc_conf.conf_io.to_io = 0
 
                 s.al.update_conf(s.layer_conf)
