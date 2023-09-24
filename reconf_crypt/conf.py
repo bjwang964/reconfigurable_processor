@@ -26,6 +26,16 @@ class connect_conf(object):
     def __init__(s):
         s.conf_out_route = [connect_conf_route() for i in range(ROW_LEN)]
         s.conf_io = connect_conf_io()
+class io_conf(object):
+    def __init__(s, addr_r0=0, out_forward=0, src_a=0, src_b=0, src_c=0):
+        s.addr_r0 = addr_r0
+        s.out_forward = out_forward
+        s.src_a = src_a
+        s.src_b = src_b
+        s.src_c = src_c
+class forward_conf(object):
+        def __init__(s):
+            s.forward_en = 0
 class layer_conf(object):
     def __init__(s):
         s.pe_conf = [PE_conf() for i in range(ROW_LEN)]
@@ -36,3 +46,5 @@ class layer_conf(object):
 class array_conf(object):
     def __init__(s):
         s.layer_conf = [layer_conf() for i in range(COL_LEN)]
+        s.io_conf    = [io_conf() for i in range(COL_LEN)]
+        s.forward_conf = forward_conf()
