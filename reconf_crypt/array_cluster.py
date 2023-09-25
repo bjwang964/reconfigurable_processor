@@ -6,6 +6,8 @@ from array_layer import *
 from macro import *
 from conf import *
 from sm4_conf import *
+from io_row import *
+from rf import *
 #class array_conf(object):
 #    def __init__(s):
 #        s.layer_conf = [layer_conf() for i in range(COL_LEN)]
@@ -30,8 +32,17 @@ class array_cluster(Component):
 
         #layer
         s.layer       = [array_layer() for i in range(COL_LEN)]
-
+        s.forward_bus = forward_bus()
+        s.io_row      = [io_row() for i in range(COL_LEN)]
+        s.rf          = rf(1024)
         
+        #io connect
+        for i in range(COL_LEN):
+            for j in range(ROW_LEN):
+                s.forward_bus.in_forward[i][j] //= s.io_row[i].forward_out[j]
+                s.forward_bus.out_forward[i][j] //= s.io_row[i].forward_in[j]
+                s.io_row[i].rf_in[j]    //= s.rf.rdata[i][j]
+            s.io_row[i].rf_addr  //= s.rf.addr[i]        
         #layer connect
         for i in range(ROW_LEN):
             s.layer[0].up_a[i] //= s.up_a[i]
@@ -45,11 +56,13 @@ class array_cluster(Component):
                 s.layer[l].down_a[p] //= s.layer[l+1].up_a[p]
                 s.layer[l].down_b[p] //= s.layer[l+1].up_b[p]
                 s.layer[l].down_c[p] //= s.layer[l+1].up_c[p]
+                s.layer[l].out_r0[p] //= s.io_row[l].r0[p]
         for l in range(COL_LEN):
             for p in range(ROW_LEN):
-                s.layer[l].in_a[p] //= Bits32(0)
-                s.layer[l].in_b[p] //= Bits32(0)
-                s.layer[l].in_c[p] //= Bits32(0)
+                s.layer[l].in_a[p] //= s.io_row[l].out_a[p]
+                s.layer[l].in_b[p] //= s.io_row[l].out_b[p]
+                s.layer[l].in_c[p] //= s.io_row[l].out_c[p]
+                
 
 
         ##io connect
@@ -65,11 +78,13 @@ class array_cluster(Component):
 
     def update_conf(s, array_conf):
         s.array_conf = array_conf
+        s.forward_bus.update_conf(s.array_conf.forward_conf)
         for i in range(COL_LEN):
             print("*******************************************")
             print("***************", i,"layer", "******************")
             print("*******************************************")
             s.layer[i].update_conf(s.array_conf.layer_conf[i])
+            s.io_row[i].update_conf(s.array_conf.io_conf[i])
 
 class test_bench(Component):
     def construct(s):
