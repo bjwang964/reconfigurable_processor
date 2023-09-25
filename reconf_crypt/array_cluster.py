@@ -34,13 +34,13 @@ class array_cluster(Component):
         s.layer       = [array_layer() for i in range(COL_LEN)]
         s.forward_bus = forward_bus()
         s.io_row      = [io_row() for i in range(COL_LEN)]
-        s.rf          = rf()
+        s.rf          = rf(1024)
         
         #io connect
         for i in range(COL_LEN):
             for j in range(ROW_LEN):
-                s.forward_bus.forward_port[i].in_forward[j] //= s.io_row[i].forward_out[j]
-                s.forward_bus.forward_port[i].out_forward[j] //= s.io_row[i].forward_in[j]
+                s.forward_bus.in_forward[i][j] //= s.io_row[i].forward_out[j]
+                s.forward_bus.out_forward[i][j] //= s.io_row[i].forward_in[j]
                 s.io_row[i].rf_in[j]    //= s.rf.rdata[i][j]
             s.io_row[i].rf_addr  //= s.rf.addr[i]        
         #layer connect
