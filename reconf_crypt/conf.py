@@ -35,16 +35,16 @@ class io_conf(object):
         s.src_c = src_c
 class forward_conf(object):
         def __init__(s):
-            s.forward_en = 0
+            s.forward_sel = 0
 class layer_conf(object):
     def __init__(s):
         s.pe_conf = [PE_conf() for i in range(ROW_LEN)]
         s.conc_conf = connect_conf()
+        s.io_conf   = io_conf()
         s.last_conf = 0
         s.cnt = 0
         s.next_cc = 0
 class array_conf(object):
     def __init__(s):
         s.layer_conf = [layer_conf() for i in range(COL_LEN)]
-        s.io_conf    = [io_conf() for i in range(COL_LEN)]
         s.forward_conf = forward_conf()
