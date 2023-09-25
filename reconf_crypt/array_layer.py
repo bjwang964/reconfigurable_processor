@@ -49,8 +49,9 @@ class array_layer(Component):
             s.out_r0[i] //= s.connect.out_r0[i]
 
     
-        @update_once
+        @update_ff
         def always_ctrl():
+            #print("go step")
             s.layer_conf_controller.go_step(s)
         
     
