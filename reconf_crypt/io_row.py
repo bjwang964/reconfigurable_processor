@@ -7,7 +7,7 @@ class io_row(Component):
         #port
         s.r0    =   [InPort(Bits32) for i in range(ROW_LEN)]
         s.rf_addr=  OutPort(Bits32)
-        s.rf_in =   InPort(Bits128)
+        s.rf_in =   [InPort(Bits32) for i in range(ROW_LEN)]
         s.forward_in=   [InPort(Bits32) for i in range(ROW_LEN)]
         s.forward_out=  [OutPort(Bits32) for i in range(ROW_LEN)]
         s.out_a =   [OutPort(Bits32) for i in range(ROW_LEN)]
@@ -35,7 +35,7 @@ class io_row(Component):
                     s.r0_wire[i]   @=   s.forward_in[i]
             else:
                 for i in range(ROW_LEN):
-                    s.r0_wire[i]   @=   s.rf_in[(i+1)*32-1:i*32]
+                    s.r0_wire[i]   @=   s.rf_in[i]
             for i in range(ROW_LEN):
                 s.forward_out[i]    @=  s.r0[i]
             #full connect
@@ -49,22 +49,22 @@ class io_row(Component):
         print("update io row configure", end="  ")
         print(s.io_conf.__dict__)
         
-class forward_port(Component):
-    def construct(s):
-        s.in_forward    =   [InPort(Bits32) for i in range(ROW_LEN)]
-        s.out_forward   =   [OutPort(Bits32) for i in range(ROW_LEN)]
+# class forward_port(Component):
+#     def construct(s):
+#         s.in_forward    =   [InPort(Bits32) for i in range(ROW_LEN)]
+#         s.out_forward   =   [OutPort(Bits32) for i in range(ROW_LEN)]
 
 class forward_bus(Component):
     def construct(s):
-        s.forward_port  =   [forward_port() for i in range(COL_LEN)]
+        s.out_forward   =   [[OutPort(Bits32) for i in range(ROW_LEN)] for j in range(COL_LEN)]
+        s.in_forward    =   [[InPort(Bits32) for i in range(ROW_LEN)] for j in range(COL_LEN)]
         s.forward_conf  =   forward_conf()
         #out
         s.out_wire      =   [Wire(Bits32) for i in range(ROW_LEN)]
-        s.port_wire     =   []
+        s.port_wire     =   [[Wire(Bits32) for i in range(ROW_LEN)] for j in range(COL_LEN)]
         for i in range(COL_LEN):
-            s.port_wire[i]     =   [Wire(Bits32) for j in range(ROW_LEN)]
             for j in range(ROW_LEN):
-                s.forward_port[i].out_forward[j] //= s.port_wire[i][j]
+                s.out_forward[i][j] //= s.port_wire[i][j]
         
         @update
         def assign():
@@ -77,7 +77,7 @@ class forward_bus(Component):
                         k+=1
                 if k == COL_LEN :
                     k = 0
-                s.out_wire[i]   @=    s.forward_port[k].in_forward[i]
+                s.out_wire[i]   @=    s.in_forward[k][i]
             for i in range(COL_LEN):
                 for j in range(ROW_LEN):
                     s.port_wire[i][j]   @=  s.out_wire[j]
