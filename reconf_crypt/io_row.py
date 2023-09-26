@@ -56,31 +56,22 @@ class io_row(Component):
 
 class forward_bus(Component):
     def construct(s):
-        s.out_forward   =   [[OutPort(Bits32) for i in range(ROW_LEN)] for j in range(COL_LEN)]
+        s.out_forward   =   [OutPort(Bits32) for i in range(ROW_LEN)]
         s.in_forward    =   [[InPort(Bits32) for i in range(ROW_LEN)] for j in range(COL_LEN)]
         s.forward_conf  =   forward_conf()
         #out
         s.out_wire      =   [Wire(Bits32) for i in range(ROW_LEN)]
-        s.port_wire     =   [[Wire(Bits32) for i in range(ROW_LEN)] for j in range(COL_LEN)]
-        for i in range(COL_LEN):
-            for j in range(ROW_LEN):
-                s.out_forward[i][j] //= s.port_wire[i][j]
+        s.port_wire     =   [Wire(Bits32) for i in range(ROW_LEN)]
+        for i in range(ROW_LEN):
+                s.out_forward[i] //= s.port_wire[i]
         
         @update
         def assign():
-            k = 0
             for i in range(ROW_LEN):
                 for j in range(COL_LEN):
-                    if s.forward_conf.forward_en :
-                        break
-                    else:
-                        k+=1
-                if k == COL_LEN :
-                    k = 0
-                s.out_wire[i]   @=    s.in_forward[k][i]
-            for i in range(COL_LEN):
-                for j in range(ROW_LEN):
-                    s.port_wire[i][j]   @=  s.out_wire[j]
+                    s.out_wire[i]   @=    s.in_forward[s.forward_conf.forward_sel][i]
+            for i in range(ROW_LEN):
+                s.port_wire[i]   @=  s.out_wire[i]
     def update_conf(s, forward_conf):
         s.forward_conf = forward_conf
         print("update io forward configure", end="  ")

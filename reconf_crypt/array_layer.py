@@ -4,14 +4,15 @@ from connect import *
 from copy import deepcopy
 from conf import *
 from layer_controller import *
+from io_row import *
         
 
 class array_layer(Component):
     def construct(s):
         #Port
-        s.in_a        =  [InPort(Bits32) for i in range(ROW_LEN)]
-        s.in_b        =  [InPort(Bits32) for i in range(ROW_LEN)]
-        s.in_c        =  [InPort(Bits32) for i in range(ROW_LEN)]
+        #s.in_a        =  [InPort(Bits32) for i in range(ROW_LEN)]
+        #s.in_b        =  [InPort(Bits32) for i in range(ROW_LEN)]
+        #s.in_c        =  [InPort(Bits32) for i in range(ROW_LEN)]
         s.up_a        =  [InPort(Bits32) for i in range(ROW_LEN)]
         s.up_b        =  [InPort(Bits32) for i in range(ROW_LEN)]
         s.up_c        =  [InPort(Bits32) for i in range(ROW_LEN)]
@@ -21,10 +22,15 @@ class array_layer(Component):
         s.down_c      =  [OutPort(Bits32) for i in range(ROW_LEN)]
         s.out_r0      =  [OutPort(Bits32) for i in range(ROW_LEN)]
 
+        s.out_forward =  [OutPort(Bits32) for i in range(ROW_LEN)]
+        s.in_forward  =  [InPort(Bits32) for i in range(ROW_LEN)]
+        s.rf_addr     =  OutPort(Bits32)
+        s.rf_rdata    =  [InPort(Bits32) for i in range(ROW_LEN)]
+
         #PE_ROW   connect
         s.PE_row      =  PE_ROW()
         s.connect     =  connector()
-
+        s.io          =  io_row()
         #conf
         s.layer_conf  = layer_conf()
         s.layer_conf_controller = layer_conf_controller()
@@ -42,13 +48,18 @@ class array_layer(Component):
             s.down_a[i]   //= s.connect.a[i]
             s.down_b[i]   //= s.connect.b[i]
             s.down_c[i]   //= s.connect.c[i]
-
-            s.in_a[i]  //= s.connect.in_a[i]
-            s.in_b[i]  //= s.connect.in_b[i]
-            s.in_c[i]  //= s.connect.in_c[i]
             s.out_r0[i] //= s.connect.out_r0[i]
 
-    
+            #io
+            s.io.out_a[i]  //= s.connect.in_a[i]
+            s.io.out_b[i]  //= s.connect.in_b[i]
+            s.io.out_c[i]  //= s.connect.in_c[i]
+            s.io.r0[i]     //= s.connect.out_r0[i]
+            s.io.rf_addr   //= s.rf_addr
+            s.io.rf_in[i]     //= s.rf_rdata[i]
+            s.io.forward_in[i]//= s.in_forward[i]
+            s.io.forward_out[i]//= s.out_forward[i]
+
         @update_ff
         def always_ctrl():
             #print("go step")
@@ -61,6 +72,7 @@ class array_layer(Component):
         for i in range(ROW_LEN):
             s.PE_row.pe[i].update_conf(s.layer_conf.pe_conf[i])
         s.connect.update_conf(s.layer_conf.conc_conf)
+        s.io.update_conf(s.layer_conf.io_conf)
 
 
     
@@ -98,9 +110,11 @@ class test_bench(Component):
             for i in range(ROW_LEN):    
                 s.al.up_b[i] @= b32(i)
                 s.al.up_c[i] @= b32(9)
-                s.al.in_a[i] @= b32(0)
-                s.al.in_b[i] @= b32(0)
-                s.al.in_c[i] @= b32(0)
+                #s.al.in_a[i] @= b32(0)
+                #s.al.in_b[i] @= b32(0)
+                #s.al.in_c[i] @= b32(0)
+                s.al.in_forward[i] @= b32(i)
+                s.al.rf_rdata[i]   @= b32(i)
 
 
         
