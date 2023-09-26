@@ -23,6 +23,7 @@ class connector(Component):
     def construct(s):
         #Port
         s.r0     =  [InPort(Bits32) for i in range(ROW_LEN)]
+        s.r1     =  [InPort(Bits32) for i in range(ROW_LEN)]
         s.a      =  [OutPort(Bits32) for i in range(ROW_LEN)]
         s.b      =  [OutPort(Bits32) for i in range(ROW_LEN)]
         s.c      =  [OutPort(Bits32) for i in range(ROW_LEN)]
@@ -46,11 +47,16 @@ class connector(Component):
 
         @update
         def assign_route():
-            for i in range(len(s.connect_conf.conf_io.from_io)) :
+            for i in range(ROW_LEN) :
                 if s.connect_conf.conf_io.from_io[i] == 0:
-                    s.a_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].a_src]
-                    s.b_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].b_src]
-                    s.c_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].c_src]
+                    if s.connect_conf.conf_port_sel[i] == 0:
+                        s.a_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].a_src]
+                        s.b_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].b_src]
+                        s.c_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].c_src]
+                    else:
+                        s.a_wire[i] @= s.r1[s.connect_conf.conf_out_route[i].a_src]
+                        s.b_wire[i] @= s.r1[s.connect_conf.conf_out_route[i].b_src]
+                        s.c_wire[i] @= s.r1[s.connect_conf.conf_out_route[i].c_src]
                 else:
                     s.a_wire[i] @= s.in_a[i] 
                     s.b_wire[i] @= s.in_b[i]

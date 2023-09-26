@@ -1,0 +1,174 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROC_CWD	/home/wbj/workspace/reconfig_processor/reconf_crypt/	//
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	//
+AA	macro.py	/^AA    =5$/;"	v
+ADD	macro.py	/^ADD   =1$/;"	v
+AES_SBox	PE.py	/^class AES_SBox(object):$/;"	c
+AND	macro.py	/^AND   =2$/;"	v
+AO	macro.py	/^AO    =6$/;"	v
+AU_OP	macro.py	/^AU_OP =1$/;"	v
+AX	macro.py	/^AX    =7$/;"	v
+CAT	macro.py	/^CAT   =18$/;"	v
+COL_LEN	macro.py	/^COL_LEN=8$/;"	v
+CONF_MEM_DEEP	conf_mem.py	/^CONF_MEM_DEEP=50$/;"	v
+EQU	macro.py	/^EQU   =4$/;"	v
+GT	macro.py	/^GT    =5$/;"	v
+LT	macro.py	/^LT    =6$/;"	v
+LUT_OP	macro.py	/^LUT_OP=2$/;"	v
+LU_OP	macro.py	/^LU_OP =0$/;"	v
+MEM_DEEP	mem.py	/^MEM_DEEP = 10$/;"	v
+MUL	macro.py	/^MUL   =3$/;"	v
+NONE	macro.py	/^NONE   = 27$/;"	v
+NOT	macro.py	/^NOT   =1$/;"	v
+OA	macro.py	/^OA    =8$/;"	v
+OO	macro.py	/^OO    =9$/;"	v
+OR	macro.py	/^OR    =3$/;"	v
+OX	macro.py	/^OX    =10$/;"	v
+PE	PE.py	/^class PE(Component):$/;"	c
+PE_FUNC	PE.py	/^class PE_FUNC(Component):$/;"	c
+PE_ROW	PE_row.py	/^class PE_ROW(Component):$/;"	c
+PE_conf	conf.py	/^class PE_conf(object):$/;"	c
+QUEUE_LEN	macro.py	/^QUEUE_LEN = 8$/;"	v
+ROW_LEN	macro.py	/^ROW_LEN=4$/;"	v
+SLA	macro.py	/^SLA   =16$/;"	v
+SLAB	macro.py	/^SLAB  =19$/;"	v
+SLADB	macro.py	/^SLADB =20$/;"	v
+SLAQB	macro.py	/^SLAQB  =22$/;"	v
+SLATB	macro.py	/^SLATB =21$/;"	v
+SLL	macro.py	/^SLL   =14$/;"	v
+SRA	macro.py	/^SRA   =17$/;"	v
+SRAB	macro.py	/^SRAB  =23$/;"	v
+SRADB	macro.py	/^SRADB =24$/;"	v
+SRAQB	macro.py	/^SRAQB  =26$/;"	v
+SRATB	macro.py	/^SRATB  =25$/;"	v
+SRL	macro.py	/^SRL   =15$/;"	v
+SUB	macro.py	/^SUB   =2$/;"	v
+XA	macro.py	/^XA    =11$/;"	v
+XO	macro.py	/^XO    =12$/;"	v
+XOR	macro.py	/^XOR   =4$/;"	v
+XX	macro.py	/^XX    =13$/;"	v
+ZERO	macro.py	/^ZERO  =0$/;"	v
+__init__	PE.py	/^    def __init__(s):$/;"	m	class:AES_SBox
+__init__	conf.py	/^        def __init__(s):$/;"	m	class:forward_conf
+__init__	conf.py	/^    def __init__(s):$/;"	m	class:PE_conf
+__init__	conf.py	/^    def __init__(s):$/;"	m	class:array_conf
+__init__	conf.py	/^    def __init__(s):$/;"	m	class:connect_conf
+__init__	conf.py	/^    def __init__(s):$/;"	m	class:connect_conf_io
+__init__	conf.py	/^    def __init__(s):$/;"	m	class:layer_conf
+__init__	conf.py	/^    def __init__(s, addr_r0=0, out_forward=0, src_a=0, src_b=0, src_c=0):$/;"	m	class:io_conf
+__init__	conf.py	/^    def __init__(s, src_a=0, src_b=0, src_c=0):$/;"	m	class:connect_conf_route
+__init__	conf.py	/^    def __init__(s, tp=b8(LU_OP), op=b8(NONE), src=b8(1)):$/;"	m	class:conf_calc
+__init__	conf_mem.py	/^    def __init__(s):$/;"	m	class:conf_mem_obj
+__init__	mem.py	/^    def __init__(s, deep):$/;"	m	class:mem_obj
+__init__	rf.py	/^    def __init__(s, deep):$/;"	m	class:rf_core
+always	PE.py	/^        def always():$/;"	f	member:PE.construct	file:
+always	PE.py	/^        def always():$/;"	f	member:test_bench.construct	file:
+always	PE_row.py	/^        def always():$/;"	f	member:test_bench.construct	file:
+always	ff.py	/^        def always():$/;"	f	member:ff.construct	file:
+always	mem.py	/^        def always():$/;"	f	member:mem.construct	file:
+always_ctrl	array_layer.py	/^        def always_ctrl():$/;"	f	member:array_layer.construct	file:
+always_print	array_layer.py	/^        def always_print():$/;"	f	member:test_bench.construct	file:
+always_print	mem.py	/^        def always_print():$/;"	f	member:test_bench.construct	file:
+always_print	rf.py	/^        def always_print():$/;"	f	member:test_bench.construct	file:
+array_conf	conf.py	/^class array_conf(object):$/;"	c
+array_layer	array_layer.py	/^class array_layer(Component):$/;"	c
+assgin_op	mem.py	/^        def assgin_op():$/;"	f	member:test_bench.construct	file:
+assign	PE.py	/^        def assign():$/;"	f	member:test_bench.construct	file:
+assign	PE_row.py	/^        def assign():$/;"	f	member:test_bench.construct	file:
+assign	io_row.py	/^        def assign():$/;"	f	member:forward_bus.construct	file:
+assign	rf.py	/^        def assign():$/;"	f	member:rf.construct	file:
+assign0	ff.py	/^        def assign0():$/;"	f	member:sync.construct	file:
+assign_assert	connect.py	/^        def assign_assert():$/;"	f	member:test_bench.construct	file:
+assign_caluc	PE.py	/^        def assign_caluc():$/;"	f	member:PE.construct	file:
+assign_cnt	connect.py	/^        def assign_cnt():$/;"	f	member:test_bench.construct	file:
+assign_conf	connect.py	/^        def assign_conf():$/;"	f	member:test_bench.construct	file:
+assign_init	array_layer.py	/^        def assign_init():$/;"	f	member:test_bench.construct	file:
+assign_init	rf.py	/^        def assign_init():$/;"	f	member:test_bench.construct	file:
+assign_input	connect.py	/^        def assign_input():$/;"	f	member:test_bench.construct	file:
+assign_print	ff.py	/^        def assign_print():$/;"	f	member:sync.construct	file:
+assign_route	connect.py	/^        def assign_route():$/;"	f	member:connector.construct	file:
+assign_route	io_row.py	/^        def assign_route():$/;"	f	member:io_row.construct	file:
+assign_write_read	mem.py	/^        def assign_write_read():$/;"	f	member:mem.construct	file:
+calc_	PE.py	/^    def calc_(s, calc, a, b, c, imm):$/;"	m	class:PE_FUNC
+comb	PE.py	/^    def comb(s, in0, in1, in2, in3):$/;"	m	class:wire_comb
+comb	ff.py	/^    def comb(s, in0, in1):$/;"	m	class:wire_comb
+comb_print	ff.py	/^        def comb_print():$/;"	f	member:sync.construct	file:
+conf_calc	conf.py	/^class conf_calc(object):$/;"	c
+conf_mem	conf_mem.py	/^conf_mem = conf_mem_obj()$/;"	v
+conf_mem_obj	conf_mem.py	/^class conf_mem_obj(object):$/;"	c
+connect_conf	conf.py	/^class connect_conf(object):$/;"	c
+connect_conf_io	conf.py	/^class connect_conf_io(object):$/;"	c
+connect_conf_route	conf.py	/^class connect_conf_route(object):$/;"	c
+connector	connect.py	/^class connector(Component):$/;"	c
+construct	PE.py	/^    def construct(s):$/;"	m	class:PE
+construct	PE.py	/^    def construct(s):$/;"	m	class:PE_FUNC
+construct	PE.py	/^    def construct(s):$/;"	m	class:test_bench
+construct	PE.py	/^    def construct(s):$/;"	m	class:wire_comb
+construct	PE_row.py	/^    def construct(s):$/;"	m	class:PE_ROW
+construct	PE_row.py	/^    def construct(s):$/;"	m	class:test_bench
+construct	array_layer.py	/^    def construct(s):$/;"	m	class:array_layer
+construct	array_layer.py	/^    def construct(s):$/;"	m	class:test_bench
+construct	connect.py	/^    def construct(s):$/;"	m	class:connector
+construct	connect.py	/^    def construct(s):$/;"	m	class:test_bench
+construct	ff.py	/^    def construct(s):$/;"	m	class:ff
+construct	ff.py	/^    def construct(s):$/;"	m	class:sync
+construct	ff.py	/^    def construct(s):$/;"	m	class:wire_comb
+construct	io_row.py	/^    def construct(s):$/;"	m	class:forward_bus
+construct	io_row.py	/^    def construct(s):$/;"	m	class:io_row
+construct	layer_controller.py	/^    def construct(s):$/;"	m	class:layer_conf_controller
+construct	mem.py	/^    def construct(s):$/;"	m	class:test_bench
+construct	mem.py	/^    def construct(s, deep):$/;"	m	class:mem
+construct	rf.py	/^    def construct(s):$/;"	m	class:rf_OutPort
+construct	rf.py	/^    def construct(s):$/;"	m	class:test_bench
+construct	rf.py	/^    def construct(s, deep):$/;"	m	class:rf
+ff	ff.py	/^class ff(Component):    $/;"	c
+forward_bus	io_row.py	/^class forward_bus(Component):$/;"	c
+forward_conf	conf.py	/^class forward_conf(object):$/;"	c
+go_step	layer_controller.py	/^    def go_step(s,array_layer):$/;"	m	class:layer_conf_controller
+init	PE.py	/^        def init():$/;"	f	member:test_bench.construct	file:
+init	PE_row.py	/^        def init():$/;"	f	member:test_bench.construct	file:
+io_conf	conf.py	/^class io_conf(object):$/;"	c
+io_row	io_row.py	/^class io_row(Component):$/;"	c
+layer_conf	conf.py	/^class layer_conf(object):$/;"	c
+layer_conf_controller	layer_controller.py	/^class layer_conf_controller(Component):$/;"	c
+look_table	PE.py	/^    def look_table(s, a):$/;"	m	class:PE_FUNC
+mem	mem.py	/^class mem(Component):$/;"	c
+mem_obj	mem.py	/^class mem_obj(object):$/;"	c
+read	conf_mem.py	/^    def read(s, addr):$/;"	m	class:conf_mem_obj
+read	mem.py	/^    def read(s, addr):$/;"	m	class:mem_obj
+read	rf.py	/^    def read(s, addr):$/;"	m	class:rf_core
+read_next_conf	layer_controller.py	/^    def read_next_conf(s, head_index, conf_cnt):$/;"	m	class:layer_conf_controller
+rf	rf.py	/^class rf(Component):$/;"	c
+rf_OutPort	rf.py	/^class rf_OutPort(Component):$/;"	c
+rf_core	rf.py	/^class rf_core(object):$/;"	c
+sm4_conf	sm4_conf.py	/^sm4_conf = array_conf()$/;"	v
+sync	ff.py	/^class sync(Component):$/;"	c
+test_bench	PE.py	/^class test_bench(Component):$/;"	c
+test_bench	PE_row.py	/^class test_bench(Component):$/;"	c
+test_bench	array_layer.py	/^class test_bench(Component):$/;"	c
+test_bench	connect.py	/^class test_bench(Component):$/;"	c
+test_bench	mem.py	/^class test_bench(Component):$/;"	c
+test_bench	rf.py	/^class test_bench(Component):$/;"	c
+test_foo	PE.py	/^def test_foo():$/;"	f
+test_foo	PE_row.py	/^def test_foo():$/;"	f
+test_foo	array_layer.py	/^def test_foo():$/;"	f
+test_foo	connect.py	/^def test_foo():$/;"	f
+test_foo	mem.py	/^def test_foo():$/;"	f
+test_foo	rf.py	/^def test_foo():$/;"	f
+test_sync	ff.py	/^def test_sync():$/;"	f
+update_conf	PE.py	/^    def update_conf(s,PE_conf):$/;"	m	class:PE
+update_conf	array_layer.py	/^    def update_conf(s,layer_conf):$/;"	m	class:array_layer
+update_conf	connect.py	/^    def update_conf(s,connect_conf):$/;"	m	class:connector
+update_conf	io_row.py	/^    def update_conf(s, forward_conf):$/;"	m	class:forward_bus
+update_conf	io_row.py	/^    def update_conf(s, io_row_conf):$/;"	m	class:io_row
+wire_comb	PE.py	/^class wire_comb(Component):$/;"	c
+wire_comb	ff.py	/^class wire_comb(Component):$/;"	c
+write	mem.py	/^    def write(s,addr,data):$/;"	m	class:mem_obj

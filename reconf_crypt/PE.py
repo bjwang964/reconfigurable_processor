@@ -166,10 +166,14 @@ class PE(Component):
         s.b = InPort(Bits32)
         s.c = InPort(Bits32)
         s.r0 = OutPort(Bits32)
+        s.r1 = OutPort(Bits32)
         #register
         s.tmp0 = Wire(Bits32)
+        s.tmp1 = Wire(Bits32)
         s.reg0 = Wire(Bits32)
+        s.reg1 = Wire(Bits32)
         s.r0   //= s.reg0
+        s.r1   //= s.reg1
         #sub-mod
         s.conf = PE_conf()
         s.func = PE_FUNC()
@@ -177,15 +181,17 @@ class PE(Component):
         @update_once
         def assign_caluc():
             s.tmp0 @= s.func.calc(s.conf.r0_calc, s.a, s.b, s.c, s.conf.imm)#TODO
+            s.tmp1 @= s.func.calc(s.conf.r1_calc, s.a, s.b, s.c, s.conf.imm)#TODO
 
         @update_ff
         def always():
             s.reg0 <<= s.tmp0
+            s.reg1 <<= s.tmp1
 
 
     def update_conf(s,PE_conf):
         s.conf = PE_conf
-        print("update PE configure",s.conf.r0_calc.__dict__, s.conf.imm)
+        print("update PE configure",s.conf.r0_calc.__dict__, s.conf.r1_calc.__dict__,s.conf.imm)
 
 class test_bench(Component):
     def construct(s):

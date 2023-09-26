@@ -123,26 +123,31 @@ class test_bench(Component):
         @update_ff
         def always_print():
             s.cnt <<= s.cnt+b32(1)
-            #for i in range(COL_LEN):    
-            #    print("layer", i,':', end='')
-            #    for j in range(ROW_LEN):
-            #        print(s.arr.layer[i].PE_row.pe[j].r0, end='  ')
+            for i in range(COL_LEN):    
+                print("---------------------layer", i,':')
+                for j in range(ROW_LEN):
+                    print(s.arr.layer[i].PE_row.pe[j].a,s.arr.layer[i].PE_row.pe[j].b,s.arr.layer[i].PE_row.pe[j].c, end='  ')
+                print("")
+                for j in range(ROW_LEN):
+                    print(s.arr.layer[i].PE_row.pe[j].r0, end='                    ')
+                print("")
+            print("=================================================ROUND",int(s.cnt),"=================================================")
+            #if int(s.cnt) <COL_LEN :
+            #    print('---------------------rounds',s.cnt,'----------------',)
+            #    print("start:", end="")
+            #    for i in range(ROW_LEN):
+            #        print(s.up_a[i], s.up_b[i], s.up_c[i],end="||")
             #    print("")
-            if int(s.cnt) <COL_LEN :
-                print('---------------------rounds',s.cnt,'----------------',)
-                print("start:", end="")
-                for i in range(ROW_LEN):
-                    print(s.up_a[i], s.up_b[i], s.up_c[i],end="||")
-                print("")
-                for i in range(ROW_LEN):
-                    print(s.arr.layer[int(s.cnt)-1].PE_row.pe[i].r0, end='  ')
-                print("")
+            #    for i in range(ROW_LEN):
+            #        print(s.arr.layer[int(s.cnt)-1].PE_row.pe[i].r0, end='  ')
+            #    print("")
                 
 def test_foo():
     tb = test_bench()
     tb.apply(DefaultPassGroup())
     tb.sim_reset()
-    for i in range(COL_LEN):
+    for i in range(COL_LEN*8):
         #print("clk posedge------------------")
+        input()
         tb.sim_tick()
 

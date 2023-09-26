@@ -12,6 +12,7 @@ class conf_calc(object):
 class PE_conf(object):
     def __init__(s):
         s.r0_calc = conf_calc()
+        s.r1_calc = conf_calc()
         s.imm     = b32()
 class connect_conf_route(object):
     def __init__(s, src_a=0, src_b=0, src_c=0):
@@ -25,6 +26,7 @@ class connect_conf_io(object):
 class connect_conf(object):
     def __init__(s):
         s.conf_out_route = [connect_conf_route() for i in range(ROW_LEN)]
+        s.conf_port_sel = [0 for i in range(ROW_LEN)]
         s.conf_io = connect_conf_io()
 class io_conf(object):
     def __init__(s, addr_r0=0, out_forward=0, src_a=0, src_b=0, src_c=0):
