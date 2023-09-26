@@ -167,6 +167,7 @@ class PE(Component):
         s.c = InPort(Bits32)
         s.r0 = OutPort(Bits32)
         s.r1 = OutPort(Bits32)
+        s.stop = InPort()
         #register
         s.tmp0 = Wire(Bits32)
         s.tmp1 = Wire(Bits32)
@@ -185,8 +186,9 @@ class PE(Component):
 
         @update_ff
         def always():
-            s.reg0 <<= s.tmp0
-            s.reg1 <<= s.tmp1
+            if s.stop != b1(1):
+                s.reg0 <<= s.tmp0
+                s.reg1 <<= s.tmp1
 
 
     def update_conf(s,PE_conf):

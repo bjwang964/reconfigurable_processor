@@ -11,6 +11,7 @@ class PE_ROW(Component):
         s.pe_c  = [InPort(Bits32) for i in range(ROW_LEN)]
         s.pe_r0 = [OutPort(Bits32) for i in range(ROW_LEN)]
         s.pe_r1 = [OutPort(Bits32) for i in range(ROW_LEN)]
+        s.stop  = [InPort() for i in range(ROW_LEN)]
 
         #connect
         for i in range(ROW_LEN):
@@ -19,6 +20,7 @@ class PE_ROW(Component):
             s.pe_c[i]  //= s.pe[i].c 
             s.pe_r0[i] //= s.pe[i].r0
             s.pe_r1[i] //= s.pe[i].r1
+            s.stop[i]  //= s.pe[i].stop
 
         #@update
         #def assign_print():

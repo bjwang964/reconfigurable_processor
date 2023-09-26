@@ -26,6 +26,8 @@ class array_layer(Component):
         s.in_forward  =  [InPort(Bits32) for i in range(ROW_LEN)]
         s.rf_addr     =  OutPort(Bits32)
         s.rf_rdata    =  [InPort(Bits32) for i in range(ROW_LEN)]
+        s.stop_o      = OutPort()
+        s.stop_i      = InPort()
 
         #PE_ROW   connect
         s.PE_row      =  PE_ROW()
@@ -37,12 +39,15 @@ class array_layer(Component):
 
         #inter connect
         s.inter_r0 = [Wire(Bits32) for i in range(ROW_LEN)]
+        s.stop_o_wire = Wire()
 
         for i in range(ROW_LEN):
             s.up_a[i] //= s.PE_row.pe_a[i]
             s.up_b[i] //= s.PE_row.pe_b[i]
             s.up_c[i] //= s.PE_row.pe_c[i]
             s.inter_r0[i] //= s.PE_row.pe_r0[i]
+            s.stop_i      //= s.PE_row.stop[i]
+            s.stop_o      //= s.stop_o_wire
 
             s.inter_r0[i] //= s.connect.r0[i]
             s.down_a[i]   //= s.connect.a[i]
@@ -60,10 +65,15 @@ class array_layer(Component):
             s.io.forward_in[i]//= s.in_forward[i]
             s.io.forward_out[i]//= s.out_forward[i]
 
+        @update
+        def assign_stop():
+            s.stop_o_wire @= s.io.io_conf.out_forward
+            
         @update_ff
         def always_ctrl():
             #print("go step")
-            s.layer_conf_controller.go_step(s)
+            if s.stop_i != 1:
+                s.layer_conf_controller.go_step(s)
         
     
     def update_conf(s,layer_conf):

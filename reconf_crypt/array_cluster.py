@@ -30,11 +30,29 @@ class array_cluster(Component):
         s.down_b      =  [OutPort(Bits32) for i in range(ROW_LEN)]
         s.down_c      =  [OutPort(Bits32) for i in range(ROW_LEN)]
 
+
         #layer
         s.layer       = [array_layer() for i in range(COL_LEN)]
         s.forward_bus = forward_bus()
         s.rf          = rf(1024)
-        
+        s.stop_req    = [Wire() for i in range(COL_LEN)]
+        s.stop_resp   = [Wire() for i in range(COL_LEN)]
+        #stop connect
+        for i in range(COL_LEN):
+            s.stop_req[i] //= s.layer[i].stop_o        
+            s.stop_resp[i] //= s.layer[i].stop_i
+
+        @update
+        def assign_stop():
+            for i in range(COL_LEN):
+                for j in range(i, COL_LEN):
+                    if s.stop_req[j] == b1(1):
+                        s.stop_resp[i] @= b1(1)
+                    else:
+                        s.stop_resp[i] @= b1(0)
+                
+
+
         #io connect
         for i in range(COL_LEN):
             for j in range(ROW_LEN):
@@ -124,14 +142,17 @@ class test_bench(Component):
         def always_print():
             s.cnt <<= s.cnt+b32(1)
             for i in range(COL_LEN):    
-                print("---------------------layer", i,':')
+                print("------------------------------------------------layer", i,':', s.arr.layer[i].stop_i,"--------------------------------------------------------")
+                for k in range(ROW_LEN):
+                    print("           ","PE",k,"          | ",end='')
+                print('')
                 for j in range(ROW_LEN):
-                    print(s.arr.layer[i].PE_row.pe[j].a,s.arr.layer[i].PE_row.pe[j].b,s.arr.layer[i].PE_row.pe[j].c, end='  ')
+                    print(s.arr.layer[i].PE_row.pe[j].a,s.arr.layer[i].PE_row.pe[j].b,s.arr.layer[i].PE_row.pe[j].c, end=' | ')
                 print("")
                 for j in range(ROW_LEN):
-                    print(s.arr.layer[i].PE_row.pe[j].r0, end='                    ')
+                    print('  ',s.arr.layer[i].PE_row.pe[j].r0,'  ', s.arr.layer[i].PE_row.pe[j].r1,end='    | ')
                 print("")
-            print("=================================================ROUND",int(s.cnt),"=================================================")
+            print("======================================================ROUND",int(s.cnt),"======================================================")
             #if int(s.cnt) <COL_LEN :
             #    print('---------------------rounds',s.cnt,'----------------',)
             #    print("start:", end="")
