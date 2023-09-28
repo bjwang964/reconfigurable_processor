@@ -23,6 +23,7 @@ class array_cluster(Component):
         #s.in_c        =  [InPort(Bits32)  for i in range(COL_LEN)]
         #s.out_r0      =  [OutPort(Bits32) for i in range(COL_LEN)]
         
+        s.up_go       = InPort()
         s.up_a        =  [InPort(Bits32)  for i in range(ROW_LEN)]
         s.up_b        =  [InPort(Bits32)  for i in range(ROW_LEN)]
         s.up_c        =  [InPort(Bits32)  for i in range(ROW_LEN)]
@@ -66,6 +67,7 @@ class array_cluster(Component):
                 s.layer[i].rf_rdata[j]    //= s.rf.rdata[i][j]
             s.layer[i].rf_addr  //= s.rf.addr[i]        
         #layer connect
+        s.layer[0].up_go //= s.up_go
         for i in range(ROW_LEN):
             s.layer[0].up_a[i] //= s.up_a[i]
             s.layer[0].up_b[i] //= s.up_b[i]
@@ -74,6 +76,7 @@ class array_cluster(Component):
             s.down_b[i] //= s.layer[COL_LEN-1].down_b[i]
             s.down_c[i] //= s.layer[COL_LEN-1].down_c[i]
         for l in range(COL_LEN-1):
+            s.layer[l].down_go //= s.layer[l+1].up_go
             for p in range(ROW_LEN):
                 s.layer[l].down_a[p] //= s.layer[l+1].up_a[p]
                 s.layer[l].down_b[p] //= s.layer[l+1].up_b[p]
@@ -117,6 +120,7 @@ class test_bench(Component):
         s.cnt = Wire(Bits32)
         s.array_conf = array_conf()
         #input wire
+        s.up_go       = Wire()
         s.up_a        =  [Wire(Bits32)  for i in range(ROW_LEN)]
         s.up_b        =  [Wire(Bits32)  for i in range(ROW_LEN)]
         s.up_c        =  [Wire(Bits32)  for i in range(ROW_LEN)]
@@ -124,6 +128,7 @@ class test_bench(Component):
         s.down_b        =  [Wire(Bits32)  for i in range(ROW_LEN)]
         s.down_c        =  [Wire(Bits32)  for i in range(ROW_LEN)]
         for i in range(ROW_LEN):    
+            s.arr.up_go //= s.up_go
             s.arr.up_a[i]  //=  s.up_a[i]  
             s.arr.up_b[i]  //=  s.up_b[i]  
             s.arr.up_c[i]  //=  s.up_c[i]  
@@ -145,14 +150,14 @@ class test_bench(Component):
                 s.up_a[i] @= s.cnt+b32(i)
                 s.up_b[i] @= s.cnt+b32(i)+b32(1)
                 s.up_c[i] @= s.cnt+b32(i)+b32(2)
-
+                s.up_go   @= b1(1)
 
 
         @update_ff
         def always_print():
             s.cnt <<= s.cnt+b32(1)
             for i in range(COL_LEN):    
-                print("------------------------------------------------layer", i,':', s.arr.layer[i].stop_i,"--------------------------------------------------------")
+                print("------------------------------------------------layer", i,':', s.arr.layer[i].stop_i,"--------------------------------------------------------", s.arr.layer[i].up_go)
                 for k in range(ROW_LEN):
                     print("           ","PE",k,"          | ",end='')
                 print('')
