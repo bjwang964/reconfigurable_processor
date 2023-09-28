@@ -33,7 +33,8 @@ class array_cluster(Component):
 
         #layer
         s.layer       = [array_layer() for i in range(COL_LEN)]
-        s.forward_bus = forward_bus()
+        s.forward_bus_r0 = forward_bus()
+        s.forward_bus_r1 = forward_bus()
         s.rf          = rf(1024)
         s.stop_req    = [Wire() for i in range(COL_LEN)]
         s.stop_resp   = [Wire() for i in range(COL_LEN)]
@@ -56,8 +57,12 @@ class array_cluster(Component):
         #io connect
         for i in range(COL_LEN):
             for j in range(ROW_LEN):
-                s.forward_bus.in_forward[i][j] //= s.layer[i].out_forward[j]
-                s.forward_bus.out_forward[j] //= s.layer[i].in_forward[j]
+                s.forward_bus_r0.in_forward[i][j] //= s.layer[i].out_forward[j]
+                s.forward_bus_r0.out_forward[j] //= s.layer[i].in_forward[j]
+
+                s.forward_bus_r1.in_forward[i][j] //= s.layer[i].out_forward_r1[j]
+                s.forward_bus_r1.out_forward[j] //= s.layer[i].in_forward_r1[j]
+
                 s.layer[i].rf_rdata[j]    //= s.rf.rdata[i][j]
             s.layer[i].rf_addr  //= s.rf.addr[i]        
         #layer connect
@@ -94,7 +99,8 @@ class array_cluster(Component):
 
     def update_conf(s, array_conf):
         s.array_conf = array_conf
-        s.forward_bus.update_conf(s.array_conf.forward_conf)
+        s.forward_bus_r0.update_conf(s.array_conf.forward_conf)
+        s.forward_bus_r1.update_conf(s.array_conf.forward_conf)
         for i in range(COL_LEN):
             print("*******************************************")
             print("***************", i,"layer", "******************")

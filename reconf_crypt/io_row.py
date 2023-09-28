@@ -6,10 +6,13 @@ class io_row(Component):
     def construct(s):
         #port
         s.r0    =   [InPort(Bits32) for i in range(ROW_LEN)]
+        s.r1    =   [InPort(Bits32) for i in range(ROW_LEN)]
         s.rf_addr=  OutPort(Bits32)
         s.rf_in =   [InPort(Bits32) for i in range(ROW_LEN)]
         s.forward_in=   [InPort(Bits32) for i in range(ROW_LEN)]
+        s.forward_r1_in=   [InPort(Bits32) for i in range(ROW_LEN)]
         s.forward_out=  [OutPort(Bits32) for i in range(ROW_LEN)]
+        s.forward_r1_out=  [OutPort(Bits32) for i in range(ROW_LEN)]
         s.out_a =   [OutPort(Bits32) for i in range(ROW_LEN)]
         s.out_b =   [OutPort(Bits32) for i in range(ROW_LEN)]
         s.out_c =   [OutPort(Bits32) for i in range(ROW_LEN)]
@@ -41,10 +44,12 @@ class io_row(Component):
                     s.r0_wire[i]   @=   s.rf_in[i]
             for i in range(ROW_LEN):
                 s.forward_out[i]    @=  s.r0[i]
+                s.forward_r1_out[i] @=  s.r1[i]
             #full connect
             for i in range(ROW_LEN):
                 s.a_wire[i] @=  s.r0_wire[s.io_conf.src_a]
-                s.b_wire[i] @=  s.r0_wire[s.io_conf.src_b]
+                #s.b_wire[i] @=  s.r0_wire[s.io_conf.src_b]
+                s.b_wire[i] @=  s.forward_r1_in[i]
                 s.c_wire[i] @=  s.r0_wire[s.io_conf.src_c]
     
     def update_conf(s, io_row_conf):

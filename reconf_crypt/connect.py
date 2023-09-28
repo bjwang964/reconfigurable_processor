@@ -28,6 +28,7 @@ class connector(Component):
         s.b      =  [OutPort(Bits32) for i in range(ROW_LEN)]
         s.c      =  [OutPort(Bits32) for i in range(ROW_LEN)]
         s.out_r0 =  [OutPort(Bits32) for i in range(ROW_LEN)]
+        s.out_r1 =  [OutPort(Bits32) for i in range(ROW_LEN)]
         s.in_a   =  [InPort(Bits32) for i in range(ROW_LEN)]
         s.in_b   =  [InPort(Bits32) for i in range(ROW_LEN)]
         s.in_c   =  [InPort(Bits32) for i in range(ROW_LEN)]
@@ -37,47 +38,51 @@ class connector(Component):
         s.b_wire =  [Wire(Bits32) for i in range(ROW_LEN)]
         s.c_wire =  [Wire(Bits32) for i in range(ROW_LEN)]
         s.out_r0_wire =  [Wire(Bits32) for i in range(ROW_LEN)]
+        s.out_r1_wire =  [Wire(Bits32) for i in range(ROW_LEN)]
         for i in range(ROW_LEN):
             s.a[i] //= s.a_wire[i]
             s.b[i] //= s.b_wire[i]
             s.c[i] //= s.c_wire[i]
             s.out_r0[i] //= s.out_r0_wire[i]
+            s.out_r1[i] //= s.out_r1_wire[i]
         #conf
         s.connect_conf = connect_conf()
 
         @update
         def assign_route():
             for i in range(ROW_LEN) :
-                if s.connect_conf.conf_io.from_io[i] == 0:
-                    if s.connect_conf.conf_out_route[i].a_src < 4:
-                        s.a_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].a_src]
-                    elif s.connect_conf.conf_out_route[i].a_src < 8:
-                        s.a_wire[i] @= s.r1[s.connect_conf.conf_out_route[i].a_src-4]
-                    else:
-                        s.a_wire[i] @= s.in_a[s.connect_conf.conf_out_route[i].a_src-8]
-
-                    if s.connect_conf.conf_out_route[i].b_src < 4:
-                        s.b_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].b_src]
-                    elif s.connect_conf.conf_out_route[i].b_src < 8:
-                        s.b_wire[i] @= s.r1[s.connect_conf.conf_out_route[i].b_src-4]
-                    else:
-                        s.b_wire[i] @= s.in_a[s.connect_conf.conf_out_route[i].b_src-8]
-
-                    if s.connect_conf.conf_out_route[i].c_src < 4:
-                        s.c_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].c_src]
-                    elif s.connect_conf.conf_out_route[i].c_src < 8:
-                        s.c_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].c_src-4]
-                    else:
-                        s.c_wire[i] @= s.in_a[s.connect_conf.conf_out_route[i].c_src-8]
-
-
+                if s.connect_conf.conf_out_route[i].a_src < 4:
+                    s.a_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].a_src]
+                elif s.connect_conf.conf_out_route[i].a_src < 8:
+                    s.a_wire[i] @= s.r1[s.connect_conf.conf_out_route[i].a_src-4]
+                elif s.connect_conf.conf_out_route[i].a_src < 12:
+                    s.a_wire[i] @= s.in_a[s.connect_conf.conf_out_route[i].a_src-8]
                 else:
-                    s.a_wire[i] @= s.in_a[i] 
-                    s.b_wire[i] @= s.in_b[i]
-                    s.c_wire[i] @= s.in_c[i]
+                    s.a_wire[i] @= s.in_b[s.connect_conf.conf_out_route[i].a_src-12]
+
+                if s.connect_conf.conf_out_route[i].b_src < 4:
+                    s.b_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].b_src]
+                elif s.connect_conf.conf_out_route[i].b_src < 8:
+                    s.b_wire[i] @= s.r1[s.connect_conf.conf_out_route[i].b_src-4]
+                elif s.connect_conf.conf_out_route[i].b_src < 12:
+                    s.b_wire[i] @= s.in_a[s.connect_conf.conf_out_route[i].b_src-8]
+                else:
+                    s.b_wire[i] @= s.in_b[s.connect_conf.conf_out_route[i].b_src-12]
+
+                if s.connect_conf.conf_out_route[i].c_src < 4:
+                    s.c_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].c_src]
+                elif s.connect_conf.conf_out_route[i].c_src < 8:
+                    s.c_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].c_src-4]
+                elif s.connect_conf.conf_out_route[i].c_src < 12:
+                    s.c_wire[i] @= s.in_a[s.connect_conf.conf_out_route[i].c_src-8]
+                else:
+                    s.c_wire[i] @= s.in_b[s.connect_conf.conf_out_route[i].c_src-12]
+
+
 
             for i in range(ROW_LEN):
                 s.out_r0_wire[i] @= s.r0[i]
+                s.out_r1_wire[i] @= s.r1[i]
 
     def update_conf(s,connect_conf):
         s.connect_conf = connect_conf

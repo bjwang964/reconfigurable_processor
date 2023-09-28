@@ -21,9 +21,12 @@ class array_layer(Component):
         s.down_b      =  [OutPort(Bits32) for i in range(ROW_LEN)]
         s.down_c      =  [OutPort(Bits32) for i in range(ROW_LEN)]
         s.out_r0      =  [OutPort(Bits32) for i in range(ROW_LEN)]
+        s.out_r1      =  [OutPort(Bits32) for i in range(ROW_LEN)]
 
         s.out_forward =  [OutPort(Bits32) for i in range(ROW_LEN)]
+        s.out_forward_r1 =  [OutPort(Bits32) for i in range(ROW_LEN)]
         s.in_forward  =  [InPort(Bits32) for i in range(ROW_LEN)]
+        s.in_forward_r1  =  [InPort(Bits32) for i in range(ROW_LEN)]
         s.rf_addr     =  OutPort(Bits32)
         s.rf_rdata    =  [InPort(Bits32) for i in range(ROW_LEN)]
         s.stop_o      = OutPort()
@@ -54,16 +57,20 @@ class array_layer(Component):
             s.down_b[i]   //= s.connect.b[i]
             s.down_c[i]   //= s.connect.c[i]
             s.out_r0[i] //= s.connect.out_r0[i]
+            s.out_r1[i] //= s.connect.out_r1[i]
 
             #io
             s.io.out_a[i]  //= s.connect.in_a[i]
             s.io.out_b[i]  //= s.connect.in_b[i]
             s.io.out_c[i]  //= s.connect.in_c[i]
             s.io.r0[i]     //= s.connect.out_r0[i]
+            s.io.r1[i]     //= s.connect.out_r1[i]
             s.io.rf_addr   //= s.rf_addr
             s.io.rf_in[i]     //= s.rf_rdata[i]
             s.io.forward_in[i]//= s.in_forward[i]
+            s.io.forward_r1_in[i]//= s.in_forward_r1[i]
             s.io.forward_out[i]//= s.out_forward[i]
+            s.io.forward_r1_out[i]//= s.out_forward_r1[i]
 
         @update
         def assign_stop():
@@ -124,6 +131,7 @@ class test_bench(Component):
                 #s.al.in_b[i] @= b32(0)
                 #s.al.in_c[i] @= b32(0)
                 s.al.in_forward[i] @= b32(i)
+                s.al.in_forward_r1[i] @= b32(i)
                 s.al.rf_rdata[i]   @= b32(i)
 
 
