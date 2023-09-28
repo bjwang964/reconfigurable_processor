@@ -8,11 +8,19 @@ from macro import *
 from conf import *
 
 
-
 class layer_conf_controller(Component):
     def construct(s):
         s.conf_queue = [layer_conf() for i in range(QUEUE_LEN)]
         s.head_index = 0
+
+    def init_conf(s, cc):
+        s.conf_queue[0] = conf_mem.read(cc)
+        print("read contrl conf from ", cc, end='  ')
+        for i in range(1,QUEUE_LEN):
+            s.conf_queue[i] = conf_mem.read(s.conf_queue[i-1].next_cc)
+            print(s.conf_queue[i-1].next_cc,end='  ')
+        print("")
+
 
     #@method_port
     def go_step(s,array_layer):

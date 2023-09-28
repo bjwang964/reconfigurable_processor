@@ -182,7 +182,7 @@ class PE(Component):
         @update_once
         def assign_caluc():
             s.tmp0 @= s.func.calc(s.conf.r0_calc, s.a, s.b, s.c, s.conf.imm)#TODO
-            s.tmp1 @= s.func.calc(s.conf.r1_calc, s.a, s.b, s.c, s.conf.imm)#TODO
+            s.tmp1 @= s.c#s.func.calc(s.conf.r1_calc, s.a, s.b, s.c, s.conf.imm)#TODO
 
         @update_ff
         def always():

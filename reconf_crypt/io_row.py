@@ -29,7 +29,10 @@ class io_row(Component):
 
         @update
         def assign_route():
-            s.addr @= s.r0[s.io_conf.addr_r0]
+            if s.io_conf.fix_acc==1:
+                s.addr @= s.io_conf.fix_addr
+            else:
+                s.addr @= s.r0[s.io_conf.addr_r0]
             if s.io_conf.out_forward == b1(1):
                 for i in range(ROW_LEN):
                     s.r0_wire[i]   @=   s.forward_in[i]

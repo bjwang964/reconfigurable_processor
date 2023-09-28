@@ -26,15 +26,16 @@ class connect_conf_io(object):
 class connect_conf(object):
     def __init__(s):
         s.conf_out_route = [connect_conf_route() for i in range(ROW_LEN)]
-        s.conf_port_sel = [0 for i in range(ROW_LEN)]
         s.conf_io = connect_conf_io()
 class io_conf(object):
-    def __init__(s, addr_r0=0, out_forward=0, src_a=0, src_b=0, src_c=0):
+    def __init__(s, addr_r0=0, out_forward=0, src_a=0, src_b=0, src_c=0, fix_acc=0, fix_addr=0):
         s.addr_r0 = addr_r0
         s.out_forward = out_forward
         s.src_a = src_a
         s.src_b = src_b
         s.src_c = src_c
+        s.fix_acc = fix_acc
+        s.fix_addr = fix_addr
 class forward_conf(object):
         def __init__(s):
             s.forward_sel = 0

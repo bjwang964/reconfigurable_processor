@@ -100,6 +100,9 @@ class array_cluster(Component):
             print("***************", i,"layer", "******************")
             print("*******************************************")
             s.layer[i].update_conf(s.array_conf.layer_conf[i])
+    def init_conf(s):
+        for i in range(COL_LEN):
+            s.layer[i].layer_conf_controller.init_conf(i)
 
 
 class test_bench(Component):
@@ -128,6 +131,7 @@ class test_bench(Component):
             if(s.cnt == b32(0)):
                 print("conf array-----------------------------------------------")
                 s.arr.update_conf(sm4_conf)
+                s.arr.init_conf()
                 print("conf array-----------------------------------------------")
 
             #init input

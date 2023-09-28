@@ -49,14 +49,28 @@ class connector(Component):
         def assign_route():
             for i in range(ROW_LEN) :
                 if s.connect_conf.conf_io.from_io[i] == 0:
-                    if s.connect_conf.conf_port_sel[i] == 0:
+                    if s.connect_conf.conf_out_route[i].a_src < 4:
                         s.a_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].a_src]
-                        s.b_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].b_src]
-                        s.c_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].c_src]
+                    elif s.connect_conf.conf_out_route[i].a_src < 8:
+                        s.a_wire[i] @= s.r1[s.connect_conf.conf_out_route[i].a_src-4]
                     else:
-                        s.a_wire[i] @= s.r1[s.connect_conf.conf_out_route[i].a_src]
-                        s.b_wire[i] @= s.r1[s.connect_conf.conf_out_route[i].b_src]
-                        s.c_wire[i] @= s.r1[s.connect_conf.conf_out_route[i].c_src]
+                        s.a_wire[i] @= s.in_a[s.connect_conf.conf_out_route[i].a_src-8]
+
+                    if s.connect_conf.conf_out_route[i].b_src < 4:
+                        s.b_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].b_src]
+                    elif s.connect_conf.conf_out_route[i].b_src < 8:
+                        s.b_wire[i] @= s.r1[s.connect_conf.conf_out_route[i].b_src-4]
+                    else:
+                        s.b_wire[i] @= s.in_a[s.connect_conf.conf_out_route[i].b_src-8]
+
+                    if s.connect_conf.conf_out_route[i].c_src < 4:
+                        s.c_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].c_src]
+                    elif s.connect_conf.conf_out_route[i].c_src < 8:
+                        s.c_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].c_src-4]
+                    else:
+                        s.c_wire[i] @= s.in_a[s.connect_conf.conf_out_route[i].c_src-8]
+
+
                 else:
                     s.a_wire[i] @= s.in_a[i] 
                     s.b_wire[i] @= s.in_b[i]
