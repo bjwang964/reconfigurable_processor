@@ -127,6 +127,8 @@ class PE_FUNC(Component):
         elif calc.type == AU_OP:
             if calc.op == ADD:
                 return operators[0]+operators[1]
+            elif calc.op == ADD_ONE:
+                return operators[0]+b32(1)
             elif calc.op == SUB:
                 return operators[0]-operators[1]
             elif calc.op == MUL:
@@ -182,7 +184,7 @@ class PE(Component):
         @update_once
         def assign_caluc():
             s.tmp0 @= s.func.calc(s.conf.r0_calc, s.a, s.b, s.c, s.conf.imm)#TODO
-            s.tmp1 @= s.c#s.func.calc(s.conf.r1_calc, s.a, s.b, s.c, s.conf.imm)#TODO
+            s.tmp1 @= s.func.calc(s.conf.r1_calc, s.a, s.b, s.c, s.conf.imm)#TODO
 
         @update_ff
         def always():

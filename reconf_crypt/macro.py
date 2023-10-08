@@ -38,8 +38,10 @@ EQU   =4
 GT    =5
 LT    =6
 LUT_OP=2
+ADD_ONE = 7
 
 
 ROW_LEN=4
 COL_LEN=8
 QUEUE_LEN = 8
+CONF_LEN  =  10

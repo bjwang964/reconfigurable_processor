@@ -37,17 +37,17 @@ class io_conf(object):
         s.fix_acc = fix_acc
         s.fix_addr = fix_addr
 class forward_conf(object):
-        def __init__(s):
-            s.forward_sel = 0
+    def __init__(s):
+        s.forward_sel = 7
 class layer_conf(object):
     def __init__(s):
         s.pe_conf = [PE_conf() for i in range(ROW_LEN)]
         s.conc_conf = connect_conf()
         s.io_conf   = io_conf()
         s.last_conf = 0
-        s.cnt = 0
+        s.cnt = 1
         s.next_cc = 0
 class array_conf(object):
     def __init__(s):
-        s.layer_conf = [layer_conf() for i in range(COL_LEN)]
+        s.layer_conf = [layer_conf() for i in range(CONF_LEN)]
         s.forward_conf = forward_conf()

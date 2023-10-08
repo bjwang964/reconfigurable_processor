@@ -21,21 +21,21 @@ class layer_conf_controller(Component):
             print(s.conf_queue[i-1].next_cc,end='  ')
         print("")
 
-
-    #@method_port
-    def go_step(s,array_layer):
-        s.conf_queue[s.head_index].cnt = s.conf_queue[s.head_index].cnt -1 
-        if s.conf_queue[s.head_index].cnt  == 0: #deq and update next conf
-            if s.conf_queue[s.head_index].conf.last_conf == 1:
-                s.head_index = 0
-            else:
-                read_next_conf(head_index,s.conf_queue[s.head_index].next_cc)#enq
-                s.head_index = (head_index + 1)% QUEUE_LEN
-                layer_conf = s.conf_queue[s.head_index].conf
-                array_layer.update_conf(layer_conf)#apply conf
-
     #@method_port
     def read_next_conf(s, head_index, conf_cnt):
         new_conf = conf_mem.read(conf_cnt)
         s.conf_queue[head_index] = new_conf
         
+
+    #@method_port
+    def go_step(s,array_layer):
+        s.conf_queue[s.head_index].cnt = s.conf_queue[s.head_index].cnt -1 
+        if s.conf_queue[s.head_index].cnt  == 0: #deq and update next conf
+            if s.conf_queue[s.head_index].last_conf == 1:
+                s.head_index = 0
+            else:
+                s.read_next_conf(s.head_index,s.conf_queue[s.head_index].next_cc)#enq
+                s.head_index = (s.head_index + 1)% QUEUE_LEN
+                layer_conf = s.conf_queue[s.head_index]
+                array_layer.update_conf(layer_conf)#apply conf
+

@@ -47,7 +47,8 @@ class io_row(Component):
                 s.forward_r1_out[i] @=  s.r1[i]
             #full connect
             for i in range(ROW_LEN):
-                s.a_wire[i] @=  s.r0_wire[s.io_conf.src_a]
+                #s.a_wire[i] @=  s.r0_wire[s.io_conf.src_a]
+                s.a_wire[i] @=  s.r0_wire[i]
                 #s.b_wire[i] @=  s.r0_wire[s.io_conf.src_b]
                 s.b_wire[i] @=  s.forward_r1_in[i]
                 s.c_wire[i] @=  s.r0_wire[s.io_conf.src_c]

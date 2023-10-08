@@ -145,17 +145,19 @@ class test_bench(Component):
                 s.arr.init_conf()
                 print("conf array-----------------------------------------------")
 
-            #init input
-            for i in range(ROW_LEN):
-                s.up_a[i] @= s.cnt+b32(i)
-                s.up_b[i] @= s.cnt+b32(i)+b32(1)
-                s.up_c[i] @= s.cnt+b32(i)+b32(2)
-                s.up_go   @= b1(1)
+                #init input
+                for i in range(ROW_LEN):
+                    s.up_a[i] @= s.cnt+b32(i)
+                    s.up_b[i] @= s.cnt+b32(i)+b32(1)
+                    s.up_c[i] @= s.cnt+b32(i)+b32(2)
+                    s.up_go   @= b1(1)
 
 
         @update_ff
         def always_print():
             s.cnt <<= s.cnt+b32(1)
+            print(s.arr.forward_bus_r0.out_forward)
+            print(s.arr.forward_bus_r1.out_forward)
             for i in range(COL_LEN):    
                 print("------------------------------------------------layer", i,':', s.arr.layer[i].stop_i,"--------------------------------------------------------", s.arr.layer[i].up_go)
                 for k in range(ROW_LEN):
@@ -184,6 +186,6 @@ def test_foo():
     tb.sim_reset()
     for i in range(COL_LEN*8):
         #print("clk posedge------------------")
-        input()
+        #input()
         tb.sim_tick()
 

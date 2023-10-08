@@ -72,7 +72,7 @@ class connector(Component):
                 if s.connect_conf.conf_out_route[i].c_src < 4:
                     s.c_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].c_src]
                 elif s.connect_conf.conf_out_route[i].c_src < 8:
-                    s.c_wire[i] @= s.r0[s.connect_conf.conf_out_route[i].c_src-4]
+                    s.c_wire[i] @= s.r1[s.connect_conf.conf_out_route[i].c_src-4]
                 elif s.connect_conf.conf_out_route[i].c_src < 12:
                     s.c_wire[i] @= s.in_a[s.connect_conf.conf_out_route[i].c_src-8]
                 else:

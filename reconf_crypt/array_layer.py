@@ -44,6 +44,7 @@ class array_layer(Component):
 
         #inter connect
         s.inter_r0 = [Wire(Bits32) for i in range(ROW_LEN)]
+        s.inter_r1 = [Wire(Bits32) for i in range(ROW_LEN)]
         s.stop_o_wire = Wire()
 
         s.go = Wire()
@@ -54,10 +55,12 @@ class array_layer(Component):
             s.up_b[i] //= s.PE_row.pe_b[i]
             s.up_c[i] //= s.PE_row.pe_c[i]
             s.inter_r0[i] //= s.PE_row.pe_r0[i]
+            s.inter_r1[i] //= s.PE_row.pe_r1[i]
             s.stop_i      //= s.PE_row.stop[i]
             s.stop_o      //= s.stop_o_wire
 
             s.inter_r0[i] //= s.connect.r0[i]
+            s.inter_r1[i] //= s.connect.r1[i]
             s.down_a[i]   //= s.connect.a[i]
             s.down_b[i]   //= s.connect.b[i]
             s.down_c[i]   //= s.connect.c[i]
@@ -84,7 +87,10 @@ class array_layer(Component):
         @update_ff
         def always_ctrl():
             s.go <<= s.up_go
+            print(s.connect.in_a, s.connect.in_b)
             #print("go step")
+            #print(s.in_forward_r1)
+            #print(s.in_forward)
             if s.stop_i != 1 and s.go == 1:
                 s.layer_conf_controller.go_step(s)
         

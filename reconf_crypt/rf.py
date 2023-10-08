@@ -4,6 +4,12 @@ from macro import *
 class rf_core(object):
     def __init__(s, deep):
         s.rf_core = [b32(0) for i in range(deep)]
+        for i in range(deep):
+            s.rf_core[i] = b32(i)
+        s.rf_core[40] = 2
+        s.rf_core[44] = 10
+        s.rf_core[48] = 8
+        s.rf_core[52] = 14
     def read(s, addr):
         return s.rf_core[addr]
 class rf_OutPort(Component):
