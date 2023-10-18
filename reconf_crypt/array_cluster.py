@@ -50,6 +50,7 @@ class array_cluster(Component):
                 for j in range(i, COL_LEN):
                     if s.stop_req[j] == b1(1):
                         s.stop_resp[i] @= b1(1)
+                        break
                     else:
                         s.stop_resp[i] @= b1(0)
                 
