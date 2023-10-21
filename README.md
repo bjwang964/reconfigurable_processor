@@ -15,5 +15,9 @@
 
 `source pymtl3/bin/activate`
 
+debug
+----------
+`pytest filename --tb=long -s -v`
+
 
 
