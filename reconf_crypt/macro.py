@@ -40,6 +40,10 @@ LT    =6
 LUT_OP=2
 ADD_ONE = 7
 
+PU_OP = 2
+SE_ST = 0
+SE_CR = 1
+
 
 ROW_LEN=4
 COL_LEN=8

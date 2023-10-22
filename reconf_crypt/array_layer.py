@@ -5,6 +5,7 @@ from copy import deepcopy
 from conf import *
 from layer_controller import *
 from io_row import *
+from PU import *
         
 
 class array_layer(Component):
@@ -38,13 +39,16 @@ class array_layer(Component):
         s.PE_row      =  PE_ROW()
         s.connect     =  connector()
         s.io          =  io_row()
+        s.PU          =  PU()
         #conf
         s.layer_conf  = layer_conf()
         s.layer_conf_controller = layer_conf_controller()
 
         #inter connect
         s.inter_r0 = [Wire(Bits32) for i in range(ROW_LEN)]
+        s.inter_r0x= [Wire(Bits32) for i in range(ROW_LEN)]
         s.inter_r1 = [Wire(Bits32) for i in range(ROW_LEN)]
+        s.pu_out   = [Wire(Bits32) for i in range(ROW_LEN)]
         s.stop_o_wire = Wire()
 
         s.go = Wire()
@@ -59,7 +63,7 @@ class array_layer(Component):
             s.stop_i      //= s.PE_row.stop[i]
             s.stop_o      //= s.stop_o_wire
 
-            s.inter_r0[i] //= s.connect.r0[i]
+            s.inter_r0x[i]//= s.connect.r0[i]
             s.inter_r1[i] //= s.connect.r1[i]
             s.down_a[i]   //= s.connect.a[i]
             s.down_b[i]   //= s.connect.b[i]
@@ -80,9 +84,16 @@ class array_layer(Component):
             s.io.forward_out[i]//= s.out_forward[i]
             s.io.forward_r1_out[i]//= s.out_forward_r1[i]
 
+            s.PU.a[i]      //= s.up_a[i]
+            s.PU.out[i]     //= s.pu_out[i]
         @update
         def assign_stop():
             s.stop_o_wire @= s.io.io_conf.out_forward
+            for i in range(ROW_LEN):
+                if s.layer_conf.r0_conf == 1:
+                    s.inter_r0x[i] @= s.pu_out[i]
+                else:
+                    s.inter_r0x[i] @= s.inter_r0[i]
             
         @update_ff
         def always_ctrl():

@@ -170,6 +170,7 @@ class test_bench(Component):
                 for j in range(ROW_LEN):
                     print('  ',s.arr.layer[i].PE_row.pe[j].r0,'  ', s.arr.layer[i].PE_row.pe[j].r1,end='    | ')
                 print("")
+            print("rf_read: ", s.arr.rf.addr, "data: ", s.arr.rf.rdata)
             print("======================================================ROUND",int(s.cnt),"======================================================")
             #if int(s.cnt) <COL_LEN :
             #    print('---------------------rounds',s.cnt,'----------------',)
