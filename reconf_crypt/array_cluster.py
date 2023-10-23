@@ -50,6 +50,7 @@ class array_cluster(Component):
                 for j in range(i, COL_LEN):
                     if s.stop_req[j] == b1(1):
                         s.stop_resp[i] @= b1(1)
+                        break
                     else:
                         s.stop_resp[i] @= b1(0)
                 
@@ -169,6 +170,7 @@ class test_bench(Component):
                 for j in range(ROW_LEN):
                     print('  ',s.arr.layer[i].PE_row.pe[j].r0,'  ', s.arr.layer[i].PE_row.pe[j].r1,end='    | ')
                 print("")
+            print("rf_read: ", s.arr.rf.addr, "data: ", s.arr.rf.rdata)
             print("======================================================ROUND",int(s.cnt),"======================================================")
             #if int(s.cnt) <COL_LEN :
             #    print('---------------------rounds',s.cnt,'----------------',)
